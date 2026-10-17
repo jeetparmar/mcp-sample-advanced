@@ -18,7 +18,7 @@ python client.py
 
 The client starts the server using MCP's stdio transport. Server logs go to stderr; stdout is reserved for MCP messages.
 
-## Run the AI client
+## Groq setup
 
 Add your Groq API key to `.env`:
 
@@ -26,24 +26,39 @@ Add your Groq API key to `.env`:
 GROQ_API_KEY=your_key_here
 ```
 
-Run it from the project virtual environment so the `groq` and `mcp` packages are available:
+## Run the AI client
+
+The AI client starts the MCP server itself over stdio:
 
 ```bash
-source .venv/bin/activate
 python ai_client.py
 ```
 
-The AI client sends the available MCP tools to Groq, then calls a tool when the model requests one. With MCP SDK v2, use `tool.input_schema`, `result.is_error`, and `model_dump()` in `ai_client.py`.
+## Run the HTTP AI client
+
+Start the HTTP server in one terminal:
+
+```bash
+python http/server.py
+```
+
+Then, in another terminal, run:
+
+```bash
+python http/client.py
+```
+
+It connects to `http://127.0.0.1:8000/mcp`.
 
 ## Tools
 
-| Tool | Arguments |
-| --- | --- |
-| `list_users` | None |
-| `get_user` | `user_id` |
-| `create_user` | `name`, `email` |
-| `update_user` | `user_id`, `name`, `email` |
-| `delete_user` | `user_id` |
-| `search_users` | `name` |
+| Tool           | Arguments                  |
+| -------------- | -------------------------- |
+| `list_users`   | None                       |
+| `get_user`     | `user_id`                  |
+| `create_user`  | `name`, `email`            |
+| `update_user`  | `user_id`, `name`, `email` |
+| `delete_user`  | `user_id`                  |
+| `search_users` | `name`                     |
 
 `users.db` is created automatically with two sample users.
